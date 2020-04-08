@@ -125,15 +125,19 @@ function showBgGreet() {
 
   if (hour < 12) {
     document.body.style.backgroundImage = "url('images/morning.jpg')";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundSize = "cover";
     greeting.innerText = "Good Morning,";
   } else if (hour < 18) {
     document.body.style.backgroundImage = "url('images/afternoon.jpg')";
     document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundSize = "cover";
     greeting.innerText = "Good Afternoon,";
   } else {
     document.body.style.backgroundImage = "url('images/evening.jpg')";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundSize = "cover";
     greeting.innerText = "Good Evening,";
-    document.body.style.color = "#fff";
   }
 }
 
