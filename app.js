@@ -11,8 +11,13 @@ const userLocation = document.querySelector(".user-location");
 const weatherIcon = document.querySelector(".weather-icon");
 const tempDegree = document.querySelector(".temperature-degree");
 const tempDesc = document.querySelector(".temperature-description");
+const notification = document.querySelector(".notification");
 
-//create weather object
+//DOM selection for quotes
+const quoteText = document.querySelector(".text");
+
+//==============  weatherApi  =================
+
 const weather = {
   unit: "celsius",
 };
@@ -81,16 +86,25 @@ tempDegree.addEventListener("click", function () {
   }
 });
 
-//show the time function
+//============== daily quote fetch =================
+
+fetch("https://type.fit/api/quotes")
+  .then((response) => {
+    let data = response.json();
+    return data;
+  })
+  .then((data) => {
+    let randomQuote = data[Math.floor(Math.random() * data.length)];
+    quoteText.innerHTML = `<q> ${randomQuote.text} </q> <span> ${randomQuote.author}</span>`;
+  });
+
+//==============  momento time area =================
+
 function showTime() {
   let today = new Date();
   let hour = today.getHours();
   let min = today.getMinutes();
   let sec = today.getSeconds();
-
-  //set AM or PM
-  //   hour >= 12 ? (amPm = "PM") : (amPm = "AM");
-  amPm = hour >= 12 ? "PM" : "AM";
 
   //set 12h format, add zero to the single unit of min and sec
   hour > 12 ? (hour = hour - 12) : (hour = hour);
@@ -98,9 +112,7 @@ function showTime() {
   sec < 10 ? (sec = "0" + sec) : (sec = sec);
   //same as - sec = sec < 10 ? "0" + sec : sec;
 
-  //output time
   time.innerHTML = `${hour}<span>:</span>${min}`;
-  period.innerHTML = amPm;
 
   //call the function every 1 s
   setTimeout(showTime, 1000);
@@ -140,7 +152,6 @@ function getFocus() {
     focus.style.borderBottom = "2px solid #ccc";
   } else {
     focus.innerText = localStorage.getItem("focus");
-    focus.style.borderBottom = "0px solid white";
   }
 }
 
@@ -154,7 +165,6 @@ focus.addEventListener("blur", setFocus);
 
 function setName(e) {
   if (e.type === "keypress") {
-    //make sure enter is pressed, enter is the code 13
     if (e.which == 13 || e.keyCode == 13) {
       localStorage.setItem("name", e.target.innerText);
       //prevent enter into the next line, blur the name area
@@ -168,7 +178,6 @@ function setName(e) {
 
 function setFocus(e) {
   if (e.type === "keypress") {
-    //make sure enter is pressed, enter is the code 13
     if (e.which == 13 || e.keyCode == 13) {
       localStorage.setItem("focus", e.target.innerText);
       //prevent enter into the next line, blur the name area
@@ -180,7 +189,6 @@ function setFocus(e) {
   }
 }
 
-//run the function
 showTime();
 showBgGreet();
 getName();
